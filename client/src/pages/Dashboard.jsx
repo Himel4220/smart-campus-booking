@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+const API_BASE = "https://smart-campus-booking.onrender.com";
+
 export default function Dashboard({ user }) {
   const [bookings, setBookings] = useState([]);
   const [venues, setVenues] = useState([]);
@@ -16,18 +18,18 @@ export default function Dashboard({ user }) {
   useEffect(() => {
     if (!token) return;
     fetchBookings();
-    axios.get('http://localhost:5000/api/venues').then(res => setVenues(res.data));
+    axios.get(`${API_BASE}/api/venues`).then(res => setVenues(res.data));
   }, [token]);
 
   const fetchBookings = () => {
-    axios.get('http://localhost:5000/api/bookings', { headers: { Authorization: `Bearer ${token}` } })
+    axios.get(`${API_BASE}/api/bookings`, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => setBookings(res.data));
   };
 
   const handleBookingSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5000/api/bookings', form, { headers: { Authorization: `Bearer ${token}` } });
+      await axios.post(`${API_BASE}/api/bookings`, form, { headers: { Authorization: `Bearer ${token}` } });
       alert('Booking request submitted successfully!');
       fetchBookings();
     } catch (err) {
@@ -42,7 +44,7 @@ export default function Dashboard({ user }) {
       if (reason === null) return;
     }
     try {
-      await axios.put(`http://localhost:5000/api/bookings/${id}/status`, { status, rejectionReason: reason }, {
+      await axios.put(`${API_BASE}/api/bookings/${id}/status`, { status, rejectionReason: reason }, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBookings();

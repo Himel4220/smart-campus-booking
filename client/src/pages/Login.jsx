@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+const API_BASE = "https://smart-campus-booking.onrender.com";
+
 export default function Login({ setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,7 +13,7 @@ export default function Login({ setUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const res = await axios.post(`${API_BASE}/api/auth/login`, { email, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       setUser(res.data.user);

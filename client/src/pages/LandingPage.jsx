@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const API_BASE = "https://smart-campus-booking.onrender.com";
+
 export default function LandingPage() {
   const [events, setEvents] = useState([]);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/bookings/public')
+    axios.get(`${API_BASE}/api/bookings/public`)
       .then(res => setEvents(res.data))
       .catch(err => console.error(err));
   }, []);
